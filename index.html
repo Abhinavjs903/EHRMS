@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NagarSetu | MCD HRMS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --blue:#1e40af;
+  --blue2:#2563eb;
+  --bg:#eef4ff;
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --success:#16a34a;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui,Arial;
+  background:linear-gradient(180deg,var(--bg),#ffffff);
+  color:var(--text);
+}
+
+.hidden{display:none}
+
+/* ---------- Layout ---------- */
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:60px 20px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:24px;
+}
+
+.card{
+  background:var(--card);
+  padding:24px;
+  border-radius:18px;
+  box-shadow:0 18px 40px rgba(30,64,175,.12);
+}
+
+/* ---------- Hero ---------- */
+.hero{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:40px;
+}
+
+.hero img{
+  max-width:520px;
+  width:100%;
+  height:auto;
+}
+
+/* ---------- Buttons ---------- */
+button{
+  padding:14px 20px;
+  border-radius:14px;
+  border:none;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.btn-primary{
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+  color:white;
+}
+
+.btn-outline{
+  background:white;
+  border:1px solid var(--border);
+}
+
+input,select{
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  border-radius:12px;
+  border:1px solid var(--border);
+}
+
+/* ---------- Dashboard ---------- */
+.wrapper{
+  display:flex;
+  min-height:100vh;
+}
+
+.sidebar{
+  width:240px;
+  background:linear-gradient(180deg,#1e3a8a,#2563eb);
+  color:white;
+  padding:24px;
+}
+
+.sidebar a{
+  display:block;
+  padding:10px 0;
+  color:#dbeafe;
+  text-decoration:none;
+}
+
+.sidebar a:hover{color:white}
+
+/* ---------- Progress ---------- */
+.bar{
+  height:14px;
+  border-radius:10px;
+  background:#dbeafe;
+  overflow:hidden;
+}
+.bar span{
+  display:block;
+  height:100%;
+  background:linear-gradient(135deg,#2563eb,#3b82f6);
+}
+
+/* ---------- Section Background ---------- */
+.section-bg{
+  background-repeat:no-repeat;
+  background-position:right bottom;
+  background-size:260px;
+}
+
+/* ---------- Footer ---------- */
+footer{
+  text-align:center;
+  padding:24px;
+  color:#475569;
+}
+
+/* ---------- Mobile ---------- */
+@media(max-width:900px){
+  .hero{flex-direction:column;text-align:center}
+  .wrapper{flex-direction:column}
+  .sidebar{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= FRONT PAGE ================= -->
+<section id="intro" class="container section-bg" data-bg="RED_FORT">
+  <div class="hero">
+    <div>
+      <h1>नगरसेतु | NagarSetu</h1>
+      <h3>Bridging Departments. Empowering Governance.</h3>
+      <p class="muted">
+        A unified HRMS and inter-department coordination platform
+        for the Municipal Corporation of Delhi.
+      </p>
+      <button class="btn-primary" onclick="goLogin()">Enter Portal</button>
+    </div>
+
+    <img id="heroLogo" alt="NagarSetu Logo">
+  </div>
+
+  <br><br>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Employee HRMS</h3>
+      <p class="muted">Attendance, salary, performance & grievances.</p>
+    </div>
+
+    <div class="card">
+      <h3>Inter-Department Coordination</h3>
+      <p class="muted">Task sharing, escalation & transparency.</p>
+    </div>
+
+    <div class="card">
+      <h3>Admin Analytics</h3>
+      <p class="muted">Centralized monitoring & control.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LOGIN ================= -->
+<section id="login" class="container hidden">
+  <div class="grid">
+    <div class="card">
+      <h3>Employee Login</h3>
+      <input id="empId" placeholder="Emp ID (E1–E9)">
+      <input placeholder="Mock OTP (1234)">
+      <button class="btn-primary" onclick="employeeLogin()">Login</button>
+    </div>
+
+    <div class="card">
+      <h3>Admin Login</h3>
+      <input id="adminPin" placeholder="Admin PIN">
+      <button class="btn-primary" onclick="adminLogin()">Login</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EMPLOYEE ================= -->
+<section id="employee" class="hidden">
+  <div class="wrapper">
+    <div class="sidebar">
+      <h2>NagarSetu</h2>
+      <a onclick="logout()">Logout</a>
+    </div>
+
+    <div class="container section-bg" data-bg="QUTUB_MINAR">
+      <div class="card">
+        <h2 id="empName"></h2>
+        <p id="empRole" class="muted"></p>
+        <p id="empSalary" class="muted"></p>
+      </div>
+
+      <br>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Attendance</h3>
+          <button id="markBtn" class="btn-primary" onclick="markAttendance()">MARK</button>
+        </div>
+
+        <div class="card">
+          <h3>Salary</h3>
+          <button class="btn-outline" onclick="markSalary()">Mark Received</button>
+        </div>
+
+        <div class="card">
+          <h3>Performance</h3>
+          <p class="muted">Updated by Admin only</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ADMIN ================= -->
+<section id="admin" class="hidden">
+  <div class="wrapper">
+    <div class="sidebar">
+      <h2>Admin</h2>
+      <a onclick="logout()">Logout</a>
+    </div>
+
+    <div class="container">
+      <div class="grid">
+        <div class="card">
+          <h3>Attendance Overview</h3>
+          <div class="bar"><span style="width:85%"></span></div>
+        </div>
+
+        <div class="card">
+          <h3>Update Performance</h3>
+          <select>
+            <option>E1 - Aman Verma</option>
+            <option>E2 - Neha Singh</option>
+            <option>E3 - Rohit Kumar</option>
+          </select>
+          <select>
+            <option>Excellent</option>
+            <option>Good</option>
+            <option>Average</option>
+          </select>
+          <button class="btn-primary">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  MADE WITH ❤️ BY BYTE_BATTALION
+</footer>
+
+<script>
+/* ========== IMAGE URL SYSTEM (FILLED) ========== */
+const IMAGES = {
+  HERO_LOGO: "https://i.ibb.co/99sKC99C/India-Gate-with-Nagarseetu-logo-design.png",
+  RED_FORT: "https://i.ibb.co/PGd8cqL0/Chat-GPT-Image-Jan-5-2026-10-51-03-AM.png",
+  QUTUB_MINAR: "https://i.ibb.co/XkFJKqx7/Chat-GPT-Image-Jan-5-2026-10-49-40-AM.png",
+  HERO_ACCENT: "https://i.ibb.co/Q31h0HKk/Whats-App-Image-2026-01-04-at-10-09-17.jpg"
+};
+
+/* Apply images safely */
+document.getElementById("heroLogo").src = IMAGES.HERO_LOGO;
+
+document.querySelectorAll(".section-bg").forEach(sec=>{
+  const key = sec.dataset.bg;
+  if(IMAGES[key]){
+    sec.style.backgroundImage = `url(${IMAGES[key]})`;
+  }
+});
+
+/* ========== DATA & LOGIC ========== */
+const employees={
+  E1:{name:"Aman Verma",role:"Intern",salary:"₹55,000"},
+  E2:{name:"Neha Singh",role:"Permanent Employee",salary:"₹80,000"},
+  E3:{name:"Rohit Kumar",role:"Supervisor",salary:"₹1,50,000"},
+  E4:{name:"Pooja Sharma",role:"Intern",salary:"₹55,000"},
+  E5:{name:"Arjun Mehta",role:"Permanent Employee",salary:"₹80,000"},
+  E6:{name:"Simran Kaur",role:"Supervisor",salary:"₹1,50,000"},
+  E7:{name:"Ankit Jain",role:"Intern",salary:"₹55,000"},
+  E8:{name:"Riya Gupta",role:"Permanent Employee",salary:"₹80,000"},
+  E9:{name:"Sahil Khan",role:"Supervisor",salary:"₹1,50,000"}
+};
+
+function hideAll(){
+  intro.classList.add("hidden");
+  login.classList.add("hidden");
+  employee.classList.add("hidden");
+  admin.classList.add("hidden");
+}
+function goLogin(){hideAll();login.classList.remove("hidden")}
+
+function employeeLogin(){
+  const id=empId.value.trim();
+  if(!employees[id]) return alert("Invalid Emp ID");
+  empName.innerText=employees[id].name;
+  empRole.innerText="Role: "+employees[id].role;
+  empSalary.innerText="Salary: "+employees[id].salary;
+  hideAll();employee.classList.remove("hidden");
+}
+function adminLogin(){
+  if(adminPin.value==="130436"){
+    hideAll();admin.classList.remove("hidden");
+  } else alert("Invalid PIN");
+}
+function markAttendance(){
+  markBtn.innerText="MARKED";
+  markBtn.style.background="#16a34a";
+}
+function markSalary(){alert("Salary marked received")}
+function logout(){location.reload()}
+</script>
+
+</body>
+</html>
